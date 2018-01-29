@@ -1,0 +1,43 @@
+{
+  "name": "koa-oai-router-middleware",
+  "version": "1.0.0",
+  "description": "middleware loader plugin of koa-oai-router",
+  "main": "src/middleware.js",
+  "scripts": {
+    "ci": "npm run lint && npm run test",
+    "test": "jest test",
+    "lint": "node_modules/.bin/eslint src"
+  },
+  "keywords": [
+    "koa",
+    "swagger",
+    "oai",
+    "openapi",
+    "restful",
+    "api",
+    "router"
+  ],
+  "author": "bitebit",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "koa-compose": "^4.0.0",
+    "lodash": "^4.17.4"
+  },
+  "peerDependencies": {
+    "koa-oai-router": "^2.0.0-alpha.1 || ^2.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.1.0",
+    "babel-preset-jest": "^22.1.0",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "jest": "^22.1.4",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-oai-router": "^2.0.0-alpha.1",
+    "supertest": "^3.0.0"
+  }
+}
