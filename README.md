@@ -42,9 +42,9 @@ npm i koa-oai-router-middleware --save
 |field|type|info|
 |---|---|---|
 |name|`string`|`middleware`|
-|evoked fields|`string|[string]`| `x-oai-middleware`, `x-middleware`, `x-oai-controller`, `x-controller`|
-|evoked fileds value|`[{file,handler}]`|`file` is relative file path of middleware , `handler` is name of middlewaree exported.|
-|options|`{string|object}`| if options is `string`, effect same as object contains `dir`, `middlewareDir` and `middleware`.|
+|evoked fields|`string`\|[`string`]| `x-oai-middleware`, `x-middleware`, `x-oai-controller`, `x-controller`|
+|evoked fileds value|`[{file,handler}]`|`file` is relative file path of middleware , `handler` is name of middleware exported|
+|options|`string`\|`object`| if options is `string`, effect same as object contains `dir`, `middlewareDir` and `middleware`.|
 
 # Usage
 In this example, we will load middlewares from `./controllers` directory and recognize the value of `x-oai-middleware` then bind them to a api.
