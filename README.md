@@ -41,7 +41,8 @@ npm i koa-oai-router-middleware --save
 # Info
 |field|type|info|
 |---|---|---|
-|name|`string`|`middleware`|
+|plugin class|`string`|`MiddlewarePlugin`|
+|plugin name|`string`|`middleware`|
 |evoked fields|`string`\|[`string`]| `x-oai-middleware`, `x-middleware`, `x-oai-controller`, `x-controller`|
 |evoked fileds value|`[{file,handler}]`|`file` is relative file path of middleware , `handler` is name of middleware exported|
 |options|`string`\|`object`| if options is `string`, effect same as object contains `dir`, `middlewareDir` and `middleware`.|
@@ -52,22 +53,19 @@ In this example, we will load middlewares from `./controllers` directory and rec
 ```js
 const Koa = require('koa');
 const Router = require('koa-oai-router');
-const middlewareLoader = require('koa-oai-router-middleware');
+const MiddlewarePlugin = require('koa-oai-router-middleware');
 
 const app = new Koa();
 const router = new Router({
   apiDoc: './api',
+  options: {
+    middleware: './controllers',
+    // OR
+    MiddlewarePlugin: './controllers',
+  },
 });
 
-// Usage one
-const loader = middlewareLoader('./controllers');
-
-// Usage two
-const loader = middlewareLoader({
-  dir: './controllers',
-});
-
-router.mount(loader);
+router.mount(MiddlewarePlugin);
 
 app.use(bodyParser());
 app.use(router.routes());

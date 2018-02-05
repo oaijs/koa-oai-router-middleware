@@ -1,6 +1,6 @@
 {
   "name": "koa-oai-router-middleware",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "middleware loader plugin of koa-oai-router",
   "main": "src/middleware.js",
   "scripts": {
@@ -20,12 +20,13 @@
   "author": "bitebit",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "debug": "^3.1.0",
     "koa-compose": "^4.0.0",
     "lodash": "^4.17.4"
   },
   "peerDependencies": {
-    "koa-oai-router": "^2.0.0-alpha.2 || ^2.0.0"
+    "koa-oai-router": "^2.0.0-alpha.3 || ^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

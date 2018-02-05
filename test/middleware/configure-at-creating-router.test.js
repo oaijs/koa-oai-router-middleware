@@ -9,9 +9,9 @@ describe('configure at creating router', () => {
       options: {
         middleware: './test/middleware/controllers',
       },
-      plugins: {
-        middleware: middleware(),
-      },
+      plugins: [
+        middleware,
+      ],
     });
 
     const pets = await request.get('/api/pets');
@@ -29,9 +29,9 @@ describe('configure at creating router', () => {
           middleware: './test/middleware/controllers',
         },
       },
-      plugins: {
-        middleware: middleware(),
-      },
+      plugins: [
+        middleware,
+      ],
     });
 
     const pets = await request.get('/api/pets');
@@ -49,9 +49,9 @@ describe('configure at creating router', () => {
           middlewareDir: './test/middleware/controllers',
         },
       },
-      plugins: {
-        middleware: middleware(),
-      },
+      plugins: [
+        middleware,
+      ],
     });
 
     const pets = await request.get('/api/pets');
@@ -69,9 +69,9 @@ describe('configure at creating router', () => {
           dir: './test/middleware/controllers',
         },
       },
-      plugins: {
-        middleware: middleware(),
-      },
+      plugins: [
+        middleware,
+      ],
     });
 
     const pets = await request.get('/api/pets');
@@ -86,14 +86,30 @@ describe('configure at creating router', () => {
       await init({
         apiDoc: './test/middleware/api',
         options: {
-          middleware: null,
+          middleware: new Date(),
         },
-        plugins: {
-          middleware: middleware(),
-        },
+        plugins: [
+          middleware,
+        ],
       });
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
+    }
+  });
+
+  it('api doc x-oai-middleware is invalid should load nothing1', async () => {
+    try {
+      await init({
+        apiDoc: './test/middleware/api-invalid-load-keywords',
+        options: {
+          middleware: './test/middleware/controllers',
+        },
+        plugins: [
+          middleware,
+        ],
+      });
+    } catch (error) {
+      expect(error.message).toMatch('invalid file and handler setted');
     }
   });
 });
