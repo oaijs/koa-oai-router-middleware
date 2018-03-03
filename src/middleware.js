@@ -34,7 +34,7 @@ class MiddlewarePlugin extends Plugin {
   }
 
   loadHandler({ file, handler }) {
-    if (!file || !handler) throw new Error('invalid file and handler setted.');
+    assert(_.isFunction(handler) || (_.isString(file) && _.isString(handler)), 'invalid file and handler setted.');
 
     const { args } = this;
     let middlewareDir = '';
@@ -47,7 +47,19 @@ class MiddlewarePlugin extends Plugin {
       throw Error(`args must be string or object, not ${typeof args}`);
     }
 
-    const modulePath = path.resolve(middlewareDir, file);
+    // a middleware function.
+    if (_.isFunction(handler)) {
+      return handler;
+    }
+
+    // a absolute or relative file path
+    let modulePath = null;
+    if (path.isAbsolute(file)) {
+      modulePath = file;
+    } else {
+      modulePath = path.resolve(middlewareDir, file);
+    }
+
     const module = require(modulePath);
 
     debug('load from:', modulePath);
