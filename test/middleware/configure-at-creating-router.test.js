@@ -1,3 +1,4 @@
+const path = require('path');
 const { init } = require('../helpers');
 
 const middleware = require('../..');
@@ -111,5 +112,146 @@ describe('configure at creating router', () => {
     } catch (error) {
       expect(error.message).toMatch('invalid file and handler setted');
     }
+  });
+
+  it('api doc x-oai-middleware file is absolute file', async () => {
+    const { request } = await init({
+      apiDoc: './test/middleware/api',
+      apiCooker: (api) => {
+        api.paths['/pets'] = {
+          get: {
+            description: 'Returns all pets from the system that the user has access to',
+            operationId: 'findPets',
+            produces: [
+              'application/json',
+            ],
+            tags: [
+              'pets',
+            ],
+            parameters: [
+              {
+                name: 'tags',
+                in: 'query',
+                description: 'tags to filter by',
+                required: false,
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+                collectionFormat: 'csv',
+              },
+              {
+                name: 'limit',
+                in: 'query',
+                description: 'maximum number of results to return',
+                required: false,
+                type: 'integer',
+                format: 'int32',
+              },
+            ],
+            'x-oai-middleware': [
+              {
+                file: path.join(__dirname, 'controllers', 'pets.js'),
+                handler: 'findPets',
+              },
+            ],
+            responses: {
+              200: {
+                description: 'pet response',
+                schema: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/definitions/Pet',
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        return api;
+      },
+      options: {
+        middleware: './test/middleware/controllers',
+      },
+      plugins: [
+        middleware,
+      ],
+    });
+
+    const pets = await request.get('/api/pets');
+
+    expect(pets.text).toMatch('find success');
+  });
+
+  it('api doc x-oai-middleware handler is middleware', async () => {
+    const { request } = await init({
+      apiDoc: './test/middleware/api',
+      apiCooker: (api) => {
+        api.paths['/pets'] = {
+          get: {
+            description: 'Returns all pets from the system that the user has access to',
+            operationId: 'findPets',
+            produces: [
+              'application/json',
+            ],
+            tags: [
+              'pets',
+            ],
+            parameters: [
+              {
+                name: 'tags',
+                in: 'query',
+                description: 'tags to filter by',
+                required: false,
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+                collectionFormat: 'csv',
+              },
+              {
+                name: 'limit',
+                in: 'query',
+                description: 'maximum number of results to return',
+                required: false,
+                type: 'integer',
+                format: 'int32',
+              },
+            ],
+            'x-oai-middleware': [
+              {
+                handler: (ctx, next) => {
+                  ctx.response.body = 'find success';
+                },
+              },
+            ],
+            responses: {
+              200: {
+                description: 'pet response',
+                schema: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/definitions/Pet',
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        return api;
+      },
+      options: {
+        middleware: './test/middleware/controllers',
+      },
+      plugins: [
+        middleware,
+      ],
+    });
+
+    const pets = await request.get('/api/pets');
+
+    expect(pets.text).toMatch('find success');
   });
 });
